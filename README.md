@@ -1,6 +1,7 @@
 # dist_centrosome
 
-
+Put extract_xyz.imj and dist_centrosome.m in the directory containing your data.
+Change line 1, 2, and the last according to your data file name and directory name.
 
 ## extract_xyz.imj
 
