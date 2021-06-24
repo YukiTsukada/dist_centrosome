@@ -1,0 +1,14 @@
+open("/Users/yuki-ts/Desktop/210621_samples to 塚田さん/1nuc4N/sample1/sample1_1_low data/210617_2_MMImages_Pos5.ome-1_mitosis.tif");
+selectWindow("210617_2_MMImages_Pos5.ome-1_mitosis.tif");
+run("Reduce Dimensionality...", "slices frames");
+run("Smooth", "stack");
+Stack.getDimensions(width, height, channels, slices, frames) ;
+
+for(j=1;j<=frames;j++){
+	for(i=1;i<=slices;i++){
+		Stack.setPosition(1,i, j); 
+		run("Find Maxima...", "prominence=30 strict exclude output=[Point Selection]");
+		run("Measure");
+}}
+
+saveAs("Results", "/Users/yuki-ts/Desktop/210621_samples to 塚田さん/1nuc4N/sample1/sample1_1_low data/Results.csv");
