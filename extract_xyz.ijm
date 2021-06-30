@@ -24,11 +24,11 @@ function operation(){
 		}	
 	}
 
-//saveAs("Results", "saveDir");
-newname = n;
-rename(newname);
-saveAs("Results", saveDir+newname+".csv");
-run("Close All");
+	//saveAs("Results", "saveDir");
+	newname = n;
+	rename(newname);
+	saveAs("Results", saveDir+newname+".csv");
+	run("Close All");
 }
 
 	
