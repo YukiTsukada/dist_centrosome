@@ -9,6 +9,12 @@ Use this macro first for stack image.
 
 
 
+## check_coordinates.ijm
+
+ImageJ macro for extracting xyz coordinates of centrosomes and visualize the detected coordinates. 
+
+
+
  ## dist_centrosome.m
 
 Matlab script for visualizing distances among centrosomes along with time course.
