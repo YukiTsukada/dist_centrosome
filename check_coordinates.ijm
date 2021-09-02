@@ -1,5 +1,6 @@
 diam = 5;
 Fold = 3;
+FFold = 2; % fold for the z-axis of left and top projections
 
 showMessage("Select Open Folder");
 openDir = getDirectory("Choose a Directory");
@@ -34,7 +35,7 @@ function display(){
 	run("Enhance Contrast", "saturated=0.35");
 	left_p = getTitle();
 	Stack.getDimensions(width, height, channels, slices, frames);
-	widF = width*Fold;
+	widF = width*Fold*FFold;
 	run("Size...", "width=widF height=hei time=frames average interpolation=Bilinear");
 
 	//    for top projection
@@ -48,7 +49,7 @@ function display(){
 	run("Enhance Contrast", "saturated=0.35");
 	top_p = getTitle();
 	Stack.getDimensions(width, height, channels, slices, frames);
-	heiF = height*Fold;
+	heiF = height*Fold*FFold;
 	run("Size...", "width=width height=heiF time=frames average interpolation=Bilinear");
 
 	//    for hight projection
