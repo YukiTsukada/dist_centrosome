@@ -1,6 +1,6 @@
 diam = 5;
 Fold = 3;
-FFold = 2; % fold for the z-axis of left and top projections
+FFold = 2; // fold for the z-axis of left and top projections
 
 showMessage("Select Open Folder");
 openDir = getDirectory("Choose a Directory");
