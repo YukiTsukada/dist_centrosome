@@ -9,6 +9,7 @@ showMessage("Select Save Folder");
 saveDir = getDirectory("Choose a Directory");
 
 list = getFileList(openDir);
+run("Set Measurements...", "mean centroid center stack redirect=None decimal=3");
 
 for (i=0; i<list.length;i++){
     operation();
@@ -24,9 +25,11 @@ function display(){
 	Stack.getDimensions(width, height, channels, slices, frames);
 	wid = width*Fold;
 	hei = height*Fold;
+	wait(500);
 	run("Size...", "width=wid height=hei time=frames constrain average interpolation=Bilinear");
 	
 	//    for Left projection
+	wait(500);
 	run("Reslice [/]...", "output=2.000 start=Left rotate avoid");
 	left_w = getTitle();	
 	run("Z Project...", "projection=[Max Intensity] all");
@@ -37,10 +40,12 @@ function display(){
 	left_p = getTitle();
 	Stack.getDimensions(width, height, channels, slices, frames);
 	widF = width*Fold*FFold;
+	wait(500);
 	run("Size...", "width=widF height=hei time=frames average interpolation=Bilinear");
 
 	//    for top projection
 	selectWindow(n);
+	wait(500);
 	run("Reslice [/]...", "output=2.000 start=Top avoid");
 	top_w = getTitle();
 	run("Z Project...", "projection=[Max Intensity] all");
@@ -51,6 +56,7 @@ function display(){
 	top_p = getTitle();
 	Stack.getDimensions(width, height, channels, slices, frames);
 	heiF = height*Fold*FFold;
+	wait(500);
 	run("Size...", "width=width height=heiF time=frames average interpolation=Bilinear");
 
 	//    for hight projection
@@ -100,6 +106,20 @@ function display(){
 		}
 	}
 
+    selectWindow(left_p);
+	rename(left_p);
+    saveAs("Tiff", saveDir+left_p);
+    
+    selectWindow(top_p);
+    rename(top_p);
+    saveAs("Tiff", saveDir+top_p);
+    
+    selectWindow(n_p);
+    rename(n_p);
+    saveAs("Tiff", saveDir+n_p);
+    
+    run("Clear Results");
+    run("Close All");	
 }
 
 
@@ -117,13 +137,6 @@ function operation(){
 		}	
 	}
 
-// selection of non-zeros
-	for(k=getValue("results.count");k>0;k--){
-		if(getResult("Slice", k-1) == 0){	
-			Table.deleteRows(k-1, k-1);
-		}
-	}
-
 // deletion of overlaps
 	for (l=getValue("results.count");l>0;l--) {
 		Xtent = getResult("X", l-1);
@@ -134,16 +147,31 @@ function operation(){
 		Slice_n = getResult("Slice",l-2);
 		Frame_c = getResult("Frame",l-1);
 		Frame_n = getResult("Frame",l-2);
-		if (Slice_c == Slice_n && Frame_c == Frame_n && abs((Xtent^2 + Ytent^2) - (Xtent_n^2 + Ytent_n^2)) < thresh_dist){
-			Table.deleteRows(l-1, l-1);
+		Mean_c = getResult("Mean",l-1);
+		Mean_n = getResult("Mean",l-2);
+		//if (Slice_c == Slice_n && Frame_c == Frame_n && abs((Xtent^2 + Ytent^2) - (Xtent_n^2 + Ytent_n^2)) < thresh_dist){
+		//	Table.deleteRows(l-1, l-1);
+		//}
+		if (Frame_c == Frame_n && abs((Xtent^2 + Ytent^2) - (Xtent_n^2 + Ytent_n^2)) < thresh_dist){
+			if (Mean_c > Mean_n){
+			Table.deleteRows(l-2, l-2);}
+			if (Mean_c < Mean_n){
+			Table.deleteRows(l-1, l-1);}
 		}
 		
 	}
 
-    //saveAs("Results", "saveDir");
+// selection of non-zeros
+	for(k=getValue("results.count");k>0;k--){
+		//if(getResult("Slice", k-1) == 0){	
+		if(getResult("X", k-1) == 15 && getResult("Y", k-1) == 15){
+			Table.deleteRows(k-1, k-1);
+		}
+	}
+
 	newname = n;
 	rename(newname);
 	saveAs("Results", saveDir+newname+".csv");
-//	run("Close All");	
+	run("Close All");	
 }
 	
