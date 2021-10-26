@@ -8,7 +8,7 @@ for (i=0; i<list.length;i++){
 	getDimensions(width, height, channels, slices, frames);
 	close();
 	
-	for (l = 1; l <= slices; l++) {
+	for (l = 1; l <= frames; l++) {
  	    open(openDir+list[i]);
     	    n = getTitle();
     	    run("Orthogonal Views");
@@ -30,7 +30,7 @@ for (i=0; i<list.length;i++){
     	    close();
 	};
 
-	for (m = 1; m <= slices; m++) {
+	for (m = 1; m <= frames; m++) {
     	    open(openDir+list[i]);
     	    n = getTitle();
     	    run("Orthogonal Views");
